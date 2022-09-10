@@ -1,0 +1,177 @@
+<html>
+  <head>
+    <title>Painterro demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      html,body,#wrapper {
+        height:100%;
+        margin:0;
+        padding:0;
+        background-color: white;
+      }
+
+      #conatiner {
+        position: absolute;
+        top: 50px;
+        bottom: 50px;
+        left: 20px;
+        right: 20px;
+      }
+
+#holder {
+  display: flex;
+}
+
+    </style>
+  </head>
+<body>
+  <div id="app">
+  </div>
+
+  <div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div>
+  <div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div><div>asf</div>
+</div>
+
+<!--<script src="https://github.com/ivictbor/painterro/releases/download/0.1.7/painterro-0.1.7.min.js"></script>-->
+<script src="painterro.min.js"></script>
+
+<script>
+
+window.p =  Painterro({
+            language: 'fr',
+            backgroundFillColorAlpha: 1.0,
+            hideByEsc: true,
+            colorScheme: {
+                main: '#8B817A',
+                control: '#1A1A1A',
+                controlContent: '#fff',
+                controlShadow: 'none',
+                activeControl: '#6F6762',
+                activeControlContent: '#fff',
+                hoverControl: '#6F6762',
+                hoverControlContent: '#fff',
+            },
+            defaultTool : 'brush',
+            //how_to_paste_actions: ['extend_right'],
+            /*hiddenTools: [
+                'select',
+                'crop',
+                'pixelize',
+                'line',
+                'arrow',
+                'rect',
+                'ellipse',
+                // 'brush',
+                // 'eraser',
+                'text',
+                'rotate',
+                'resize',
+                // 'save',
+                'open',
+                // 'close',
+                // 'undo',
+                'redo',
+                // 'zoomin',
+                // 'zoomout',
+                'bucket',
+                'clear',
+                'settings',
+            ],
+            */
+           saveHandler: saveBlobImg,
+           palette:[[255,  255,  255], 
+                    [220  ,147 , 77], 
+                    [238,  229,  102],
+                    [106,  177,  21],
+                    [200  ,226 , 37],
+                    [233 ,  5  ,219],
+                    [116 , 116 , 138],
+                    [225 , 184 , 161]]
+        });
+  window.p.show()
+  const ctx = window.p.ctx; 
+  function saveBlobImg(image,done){
+    var url = {
+        name: image.suggestedFileName(),
+        src: image.asBlob()
+    };
+    
+    if (window.navigator.msSaveOrOpenBlob) {   
+        navigator.msSaveBlob(url.src, url.name);
+    } else {
+        var link = document.createElement("a");
+        link.setAttribute("href", window.URL.createObjectURL(url.src));
+        link.setAttribute("download", url.name + '.png');
+        document.body.appendChild(link);
+        link.click();
+    }
+    done(false)
+}
+
+function setCanvasScalingFactor() {
+   return window.devicePixelRatio || 1;
+}
+
+function resizeCanvas() {
+    //Gets the devicePixelRatio
+    var pixelRatio = setCanvasScalingFactor();
+
+    //The viewport is in portrait mode, so var width should be based off viewport WIDTH
+    if (window.innerHeight > window.innerWidth) {
+        //Makes the canvas 100% of the viewport width
+        var width = Math.round(1.0 * window.innerWidth);
+    }
+  //The viewport is in landscape mode, so var width should be based off viewport HEIGHT
+    else {
+        //Makes the canvas 100% of the viewport height
+        var width = Math.round(1.0 * window.innerHeight);
+    }
+
+    //This is done in order to maintain the 1:1 aspect ratio, adjust as needed
+    var height = width;
+
+    //This will be used to downscale the canvas element when devicePixelRatio > 1
+    aWrapper.style.width = width + "px";
+    aWrapper.style.height = height + "px";
+
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
+}
+
+  // ctx.beginPath();
+  // ctx.moveTo(0,0);
+  // ctx.lineTo(300,150);
+  // ctx.strokeStyle="#FF0000";
+  // ctx.stroke(); 
+
+
+// document.onpaste = (event) => {
+//   const { items } = event.clipboardData || event.originalEvent.clipboardData;
+//   Array.from(items).forEach((item) => {
+//     if (item.kind === 'file') {
+//       if (!window.painterroOpenedInstance) {
+//         // if painterro already opened - it will handle onpaste
+//         const blob = item.getAsFile();
+//         const reader = new FileReader();
+//         reader.onload = (readerEvent) => {
+//             window.painterroOpenedInstance = Painterro({
+//               initText: 'Press <b>PrtScr</b>, <b>Ctrl+V</b> to paste screenshot.<br>Press <b>Ctrl+S</b> to save', // todo: different for os-es
+//               onHide: () => {
+//                 window.painterroOpenedInstance = undefined;
+//               },
+//               saveHandler: (image, done) => {
+//                 console.log('Save it here', image.asDataURL());  // you could provide your save handler
+//                 done(true);
+//               },
+//             }).show(readerEvent.target.result, item.type);
+//         };
+//         reader.readAsDataURL(blob);
+//       }
+//     }
+//   });
+// };
+  
+
+</script>
+</body>
+</html>
